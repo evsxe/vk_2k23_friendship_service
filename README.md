@@ -1,0 +1,1 @@
+# vk_2k23_friendship_service
