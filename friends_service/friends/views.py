@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView
 from django.contrib.auth.models import User
 from .models import FriendRequest, Friendship
-from .forms import RegistrationForm, FriendRequestForm
+from .forms import RegistrationForm, LoginForm
+from django.contrib.auth import authenticate, login
 
 
 def register(request):
@@ -20,6 +21,25 @@ def register(request):
     return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/register.html', {'form': form})
 
 
+def home_view(request):
+    return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/home.html')
+
+
+# testUser@vk.ru
+# adminadmin123123
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            # handle invalid login
+            return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/login.html', {'form': LoginForm(), 'error': 'Invalid login credentials'})
+    else:
+        return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/login.html', {'form': LoginForm()})
 
 
 @login_required

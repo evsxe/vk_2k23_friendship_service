@@ -16,3 +16,8 @@ class FriendRequestForm(forms.ModelForm):
     class Meta:
         model = FriendRequest
         fields = []
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
