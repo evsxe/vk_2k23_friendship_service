@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User profile</title>
+</head>
+<body>
+  {% block content %}
+  <h2>{{ user.username }}</h2>
+  {% if user == request.user %}
+    <p><a href="{% url 'password_change' %}">Change password</a></p>
+  {% endif %}
+  {% if user in request.user.friends.all %}
+    <p>You are friends with {{ user.username }}. <a href="{% url 'remove_friend' user.id %}">Remove</a></p>
+  {% elif user != request.user %}
+    {% if request.user.friendship_requests_received.filter(from_user=user).exists %}
+      <p>You have a pending friendship request from {{ user.username }}. <a href="{% url 'friendship_requests' %}">View requests</a></p>
+    {% elif request.user.friendship_requests_sent.filter(to_user=user).exists %}
+      <p>You have sent a friendship request to {{ user.username }}.</p>
+      <p><a href="{% url 'cancel_friend_request' user.id %}">Cancel request</a></p>
+    {% else %}
+      <p><a href="{% url 'send_friend_request' user.id %}">Add {{ user.username }} as a friend</a></p>
+    {% endif %}
+  {% endif %}
+  {% endblock %}
+</body>
+</html>
