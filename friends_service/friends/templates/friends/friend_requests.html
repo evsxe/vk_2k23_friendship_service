@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+  {% block content %}
+  <h2>Friend Requests</h2>
+  <h3>Received Requests</h3>
+  {% if received_requests %}
+    <ul>
+      {% for request in received_requests %}
+        <li>{{ request.sender }} <a href="{% url 'response_to_friend_request' request.id %}">Respond</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No received friend requests.</p>
+  {% endif %}
+  <h3>Sent Requests</h3>
+  {% if sent_requests %}
+    <ul>
+      {% for request in sent_requests %}
+        <li>Sent to {{ request.receiver }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No sent friend requests.</p>
+  {% endif %}
+  {% endblock %}
+</body>
+</html>

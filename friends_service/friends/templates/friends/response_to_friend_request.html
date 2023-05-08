@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+  {% extends 'base.html' %}
+  {% block content %}
+  <h2>Friend Request</h2>
+  <p>{{ friend_request.sender }} wants to be your friend.</p>
+  <form method="post">
+    {% csrf_token %}
+    <input type="radio" name="accepted" value="true" id="id_accepted_true">
+    <label for="id_accepted_true">Accept</label><br>
+    <input type="radio" name="accepted" value="false" id="id_accepted_false">
+    <label for="id_accepted_false">Reject</label><br>
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}
+</body>
+</html>
