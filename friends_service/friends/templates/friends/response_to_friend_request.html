@@ -1,24 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friend Request</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 0;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        input[type="radio"] {
+            margin-left: 5px;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        label input[type="radio"] {
+            margin-left: 10px;
+        }
+
+        button {
+            background-color: #3f51b5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  {% block content %}
-  <h2>Friend Request</h2>
-  <p>{{ friend_request.sender }} wants to be your friend.</p>
-  <form method="post">
-    {% csrf_token %}
-    <input type="radio" name="accepted" value="true" id="id_accepted_true">
-    <label for="id_accepted_true">Accept</label><br>
-    <input type="radio" name="accepted" value="false" id="id_accepted_false">
-    <label for="id_accepted_false">Reject</label><br>
-    <button type="submit">Submit</button>
-  </form>
-  {% endblock %}
+    <div class="container">
+        <h2>Friend Request</h2>
+        <p>{{ friend_request.sender }} wants to be your friend.</p>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_accepted_true">
+                <input type="radio" name="accepted" value="true" id="id_accepted_true">
+                Accept
+            </label>
+            <label for="id_accepted_false">
+                <input type="radio" name="accepted" value="false" id="id_accepted_false">
+                Reject
+            </label>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </body>
 </html>

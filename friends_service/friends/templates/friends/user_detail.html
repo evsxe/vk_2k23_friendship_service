@@ -1,25 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 0;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        button {
+            background-color: #3f51b5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
-  {% block content %}
-  <h2>User Profile</h2>
-  <p>Username: {{ user.username }}</p>
-  <p>Email: {{ user.email }}</p>
-  {% if user != request.user %}
-    <form method="post" action="{% url 'send_friend_request' user.id %}">
-      {% csrf_token %}
-      <button type="submit">Send Friend Request</button>
-    </form>
-  {% endif %}
-  {% endblock %}
-  <a href="{% url 'user_list' %}"><button>Back</button></a>
-  <a href="{% url 'home' %}"><button>Home</button></a>
+    <div class="container">
+        <h2>User Profile</h2>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        {% if user != request.user %}
+            <form method="post" action="{% url 'send_friend_request' user.id %}">
+                {% csrf_token %}
+                <button type="submit">Send Friend Request</button>
+            </form>
+        {% endif %}
+        <a href="{% url 'user_list' %}"><button>Back</button></a>
+        <a href="{% url 'home' %}"><button>Home</button></a>
+    </div>
 </body>
 </html>

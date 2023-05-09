@@ -2,16 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .right {
+            width: 300px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .links a {
+            display: block;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: #3f51b5;
+            text-decoration: none;
+        }
+
+        button {
+            display: block;
+            margin-top: 20px;
+            background-color: #3f51b5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-  <h1>Welcome, {{ request.user.username }}!</h1>
-  <a href="{% url 'friend_requests' %}"><button>Friend Requests</button></a>
-  <a href="{% url 'friend_list' %}"><button>Friend List</button></a>
-  <a href="{% url 'user_list' %}"><button>All users</button></a>
-  <a href="{% url 'login' %}"><button>Logout</button></a>
+    <div class="container">
+        <div class="left">
+            <div class="profile">
+                <img src="https://via.placeholder.com/50x50.png?text=Profile+Image" alt="Profile Image">
+                <h1>Welcome, {{ request.user.username }}!</h1>
+            </div>
+            <div class="links">
+                <a href="{% url 'friend_requests' %}">Friend Requests</a>
+                <a href="{% url 'friend_list' %}">Friend List</a>
+                <a href="{% url 'user_list' %}">All users</a>
+            </div>
+        </div>
+        <div class="right">
+            <img src="https://via.placeholder.com/300x400.png?text=Profile+Image" alt="Profile Image">
+            <button onclick="window.location.href='{% url 'login' %}'">Logout</button>
+        </div>
+    </div>
 </body>
 </html>
