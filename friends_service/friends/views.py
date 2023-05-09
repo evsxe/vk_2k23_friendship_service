@@ -10,6 +10,8 @@ from pathlib import Path
 from .models import FriendRequest, Friendship
 from .forms import RegistrationForm, LoginForm
 
+PATH_TO_TEMPLATES = Path(Path.cwd(), 'friends', 'templates', 'friends')
+
 
 def register(request):
     if request.method == 'POST':
@@ -20,11 +22,19 @@ def register(request):
             return redirect('login')
     else:
         form = RegistrationForm()
-    return render(request, f'{Path.cwd()}/friends/templates/friends/register.html', {'form': form})
+    return render(
+        request,
+        Path(PATH_TO_TEMPLATES, 'register.html'),
+        {'form': form}
+    )
 
 
 def home_view(request):
-    return render(request, f'{Path.cwd()}/friends/templates/friends/home.html')
+    return render(
+        request,
+        Path(PATH_TO_TEMPLATES, 'home.html')
+    )
+
 
 # testUser@vk.ru
 # adminadmin123123
@@ -38,11 +48,16 @@ def login_view(request):
             return redirect('home')
         else:
             # handle invalid login
-            return render(request, f'{Path.cwd()}/friends/templates/friends/login.html',
-                          {'form': LoginForm(), 'error': 'Invalid login credentials'})
+            return render(
+                request,
+                Path(PATH_TO_TEMPLATES, 'login.html'),
+                {'form': LoginForm(), 'error': 'Invalid login credentials'}
+            )
     else:
-        return render(request, f'{Path.cwd()}/friends/templates/friends/login.html', {'form': LoginForm()})
-
+        return render(
+            request,
+            Path(PATH_TO_TEMPLATES, 'login.html'),
+            {'form': LoginForm()})
 
 @login_required
 def send_friend_request(request, receiver_id):
@@ -79,16 +94,22 @@ def response_to_friend_request(request, friend_request_id):
             friend_request.delete()
             messages.success(request, 'Friend request rejected')
         return redirect('friend_requests')
-    return render(request, f'{Path.cwd()}/friends/templates/friends/response_to_friend_request.html',
-                  {'friend_request': friend_request})
+    return render(
+        request,
+        Path(PATH_TO_TEMPLATES, 'response_to_friend_request.html'),
+        {'friend_request': friend_request}
+    )
 
 
 @login_required
 def friend_requests(request):
     received_requests = FriendRequest.objects.filter(receiver=request.user)
     sent_requests = FriendRequest.objects.filter(sender=request.user)
-    return render(request, f'{Path.cwd()}/friends/templates/friends/friend_requests.html',
-                  {'received_requests': received_requests, 'sent_requests': sent_requests})
+    return render(
+        request,
+        Path(PATH_TO_TEMPLATES, 'friend_requests.html'),
+        {'received_requests': received_requests, 'sent_requests': sent_requests}
+    )
 
 
 @login_required
@@ -100,17 +121,21 @@ def friend_list(request):
         friends.append(friendship.user2)
     for friendship in friendships2:
         friends.append(friendship.user1)
-    return render(request, f'{Path.cwd()}/friends/templates/friends/friend_list.html', {'friends': friends})
+    return render(
+        request,
+        Path(PATH_TO_TEMPLATES, 'friend_list.html'),
+        {'friends': friends}
+    )
 
 
 class UserListView(ListView):
     model = User
-    template_name = f'{Path.cwd()}/friends/templates/friends/friends/user_list.html'
+    template_name = Path(PATH_TO_TEMPLATES, 'user_list.html')
     context_object_name = 'users'
 
 
 class UserUpdateView(UpdateView):
     model = User
     fields = ['username', 'email']
-    template_name = f'{Path.cwd()}/friends/templates/friends/user_update.html'
+    template_name = Path(PATH_TO_TEMPLATES, 'user_update.html')
     success_url = reverse_lazy('friend_list')
