@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.db.models import Q
 from pathlib import Path
 
 from .models import FriendRequest, Friendship
@@ -29,6 +30,11 @@ def register(request):
     )
 
 
+def user_detail(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    return render(request, Path(PATH_TO_TEMPLATES, 'user_detail.html'), {'user': user})
+
+
 def home_view(request):
     return render(
         request,
@@ -38,6 +44,12 @@ def home_view(request):
 
 # testUser@vk.ru
 # adminadmin123123
+
+#test.test@vk.ru
+#testtest123123
+
+#valeriy@vk.ru
+#adminadminqwe
 def login_view(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -85,11 +97,16 @@ def response_to_friend_request(request, friend_request_id):
     if request.method == 'POST':
         accepted = request.POST.get('accepted')
         if accepted == 'true':
-            friendship = Friendship(user1=friend_request.sender, user2=friend_request.receiver)
-            friendship.save()
-            friend_request.accepted = True
-            friend_request.save()
-            messages.success(request, 'Friend request accepted')
+            # Проверяем, существует ли уже дружба между пользователями
+            if Friendship.objects.filter(Q(user1=friend_request.sender, user2=friend_request.receiver) | Q(user1=friend_request.receiver, user2=friend_request.sender)).exists():
+                messages.warning(request, 'You have already accepted this friend request')
+            else:
+                # Создаем новую дружбу
+                friendship = Friendship(user1=friend_request.sender, user2=friend_request.receiver)
+                friendship.save()
+                friend_request.accepted = True
+                friend_request.save()
+                messages.success(request, 'Friend request accepted')
         else:
             friend_request.delete()
             messages.success(request, 'Friend request rejected')

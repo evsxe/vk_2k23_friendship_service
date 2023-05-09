@@ -8,7 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-  {% extends 'base.html' %}
   {% block content %}
   <h2>Friend Request</h2>
   <p>{{ friend_request.sender }} wants to be your friend.</p>
@@ -20,6 +19,6 @@
     <label for="id_accepted_false">Reject</label><br>
     <button type="submit">Submit</button>
   </form>
-{% endblock %}
+  {% endblock %}
 </body>
 </html>

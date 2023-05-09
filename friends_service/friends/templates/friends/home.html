@@ -8,8 +8,10 @@
     <title>Home Page</title>
 </head>
 <body>
-  <h1>Home Page</h1>
+  <h1>Welcome, {{ request.user.username }}!</h1>
   <a href="{% url 'friend_requests' %}"><button>Friend Requests</button></a>
   <a href="{% url 'friend_list' %}"><button>Friend List</button></a>
+  <a href="{% url 'user_list' %}"><button>All users</button></a>
+  <a href="{% url 'login' %}"><button>Logout</button></a>
 </body>
 </html>
