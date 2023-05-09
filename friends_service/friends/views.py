@@ -4,9 +4,11 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from pathlib import Path
+
 from .models import FriendRequest, Friendship
 from .forms import RegistrationForm, LoginForm
-from django.contrib.auth import authenticate, login
 
 
 def register(request):
@@ -18,12 +20,11 @@ def register(request):
             return redirect('login')
     else:
         form = RegistrationForm()
-    return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/register.html', {'form': form})
+    return render(request, f'{Path.cwd()}/friends/templates/friends/register.html', {'form': form})
 
 
 def home_view(request):
-    return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/home.html')
-
+    return render(request, f'{Path.cwd()}/friends/templates/friends/home.html')
 
 # testUser@vk.ru
 # adminadmin123123
@@ -37,9 +38,10 @@ def login_view(request):
             return redirect('home')
         else:
             # handle invalid login
-            return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/login.html', {'form': LoginForm(), 'error': 'Invalid login credentials'})
+            return render(request, f'{Path.cwd()}/friends/templates/friends/login.html',
+                          {'form': LoginForm(), 'error': 'Invalid login credentials'})
     else:
-        return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/login.html', {'form': LoginForm()})
+        return render(request, f'{Path.cwd()}/friends/templates/friends/login.html', {'form': LoginForm()})
 
 
 @login_required
@@ -48,7 +50,8 @@ def send_friend_request(request, receiver_id):
     if FriendRequest.objects.filter(sender=request.user, receiver=receiver).exists():
         messages.error(request, 'You have already sent a friend request to this user')
         return redirect('user_detail', pk=receiver_id)
-    elif Friendship.objects.filter(user1=request.user, user2=receiver).exists() or Friendship.objects.filter(user1=receiver, user2=request.user).exists():
+    elif Friendship.objects.filter(user1=request.user, user2=receiver).exists() or \
+            Friendship.objects.filter(user1=receiver, user2=request.user).exists():
         messages.error(request, 'You are already friends with this user')
         return redirect('user_detail', pk=receiver_id)
     else:
@@ -76,14 +79,16 @@ def response_to_friend_request(request, friend_request_id):
             friend_request.delete()
             messages.success(request, 'Friend request rejected')
         return redirect('friend_requests')
-    return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/response_to_friend_request.html', {'friend_request': friend_request})
+    return render(request, f'{Path.cwd()}/friends/templates/friends/response_to_friend_request.html',
+                  {'friend_request': friend_request})
 
 
 @login_required
 def friend_requests(request):
     received_requests = FriendRequest.objects.filter(receiver=request.user)
     sent_requests = FriendRequest.objects.filter(sender=request.user)
-    return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/friend_requests.html', {'received_requests': received_requests, 'sent_requests': sent_requests})
+    return render(request, f'{Path.cwd()}/friends/templates/friends/friend_requests.html',
+                  {'received_requests': received_requests, 'sent_requests': sent_requests})
 
 
 @login_required
@@ -95,17 +100,17 @@ def friend_list(request):
         friends.append(friendship.user2)
     for friendship in friendships2:
         friends.append(friendship.user1)
-    return render(request, '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/friend_list.html', {'friends': friends})
+    return render(request, f'{Path.cwd()}/friends/templates/friends/friend_list.html', {'friends': friends})
 
 
 class UserListView(ListView):
     model = User
-    template_name = '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/friends/user_list.html'
+    template_name = f'{Path.cwd()}/friends/templates/friends/friends/user_list.html'
     context_object_name = 'users'
 
 
 class UserUpdateView(UpdateView):
     model = User
     fields = ['username', 'email']
-    template_name = '/Users/evgeniysaluev/PycharmProjects/vk_2k23_friendship_service/friends_service/friends/templates/friends/user_update.html'
+    template_name = f'{Path.cwd()}/friends/templates/friends/user_update.html'
     success_url = reverse_lazy('friend_list')
