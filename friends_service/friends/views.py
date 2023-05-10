@@ -45,11 +45,11 @@ def home_view(request):
 # testUser@vk.ru
 # adminadmin123123
 
-#test.test@vk.ru
-#testtest123123
+# test.test@vk.ru
+# testtest123123
 
-#valeriy@vk.ru
-#adminadminqwe
+# valeriy@vk.ru
+# adminadminqwe
 def login_view(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -70,6 +70,7 @@ def login_view(request):
             request,
             Path(PATH_TO_TEMPLATES, 'login.html'),
             {'form': LoginForm()})
+
 
 @login_required
 def send_friend_request(request, receiver_id):
@@ -98,7 +99,9 @@ def response_to_friend_request(request, friend_request_id):
         accepted = request.POST.get('accepted')
         if accepted == 'true':
             # Проверяем, существует ли уже дружба между пользователями
-            if Friendship.objects.filter(Q(user1=friend_request.sender, user2=friend_request.receiver) | Q(user1=friend_request.receiver, user2=friend_request.sender)).exists():
+            if Friendship.objects.filter(
+                    Q(user1=friend_request.sender, user2=friend_request.receiver) | Q(user1=friend_request.receiver,
+                                                                                      user2=friend_request.sender)).exists():
                 messages.warning(request, 'You have already accepted this friend request')
             else:
                 # Создаем новую дружбу
