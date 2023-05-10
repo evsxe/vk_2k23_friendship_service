@@ -51,6 +51,23 @@ cd vk_2k23_friendship_service/friends_service
 python manage.py runserver
 ```
 
+## Инструкция в Dockerfile
+Вы можете использовать Dockerfile для создания образа Docker,
+который упакует проект в контейнер. 
+Для этого выполните команду docker build из корневой директории вашего проекта:
+```
+docker build -t frienship-service .
+```
+Эта команда создаст Docker-образ с именем frienship-service,
+используя Dockerfile и файл requirements.txt в текущей директории.
+
+После создания образа Docker вы можете запустить контейнер с вашим проектом,
+используя команду docker run:
+```
+docker run -p 8000:8000 frienship-service
+```
+
+
 ## Описание API
 
 См. [openapi.yaml](openapi.yaml)
