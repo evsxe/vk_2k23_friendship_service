@@ -42,14 +42,6 @@ def home_view(request):
     )
 
 
-# testUser@vk.ru
-# adminadmin123123
-
-# test.test@vk.ru
-# testtest123123
-
-# valeriy@vk.ru
-# adminadminqwe
 def login_view(request):
     if request.method == 'POST':
         email = request.POST['email']
