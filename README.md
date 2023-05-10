@@ -51,7 +51,7 @@ cd vk_2k23_friendship_service/friends_service
 python manage.py runserver
 ```
 
-## Инструкция в Dockerfile
+## Инструкция к Dockerfile
 Вы можете использовать Dockerfile для создания образа Docker,
 который упакует проект в контейнер. 
 Для этого выполните команду docker build из корневой директории вашего проекта:
