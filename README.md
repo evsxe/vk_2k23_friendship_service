@@ -67,6 +67,17 @@ docker build -t frienship-service .
 docker run -p 8000:8000 frienship-service
 ```
 
+## Unit-тестирование
+На данный момент реализованы тесты для файла models.py ! 
+
+Чтобы запустить unit-тестирование нужно выполнить следующие команды:
+
+```
+cd vk_2k23_friendship_service/friends_service
+python manage.py test
+```
+
+
 
 ## Описание API
 
