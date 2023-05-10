@@ -53,5 +53,5 @@ python manage.py runserver
 
 ## Описание API
 
-См. [openapi.yaml](OpenAPI.yaml)
+См. [openapi.yaml](openapi.yaml)
 
