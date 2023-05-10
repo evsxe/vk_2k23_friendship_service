@@ -90,13 +90,11 @@ def response_to_friend_request(request, friend_request_id):
     if request.method == 'POST':
         accepted = request.POST.get('accepted')
         if accepted == 'true':
-            # Проверяем, существует ли уже дружба между пользователями
             if Friendship.objects.filter(
                     Q(user1=friend_request.sender, user2=friend_request.receiver) | Q(user1=friend_request.receiver,
                                                                                       user2=friend_request.sender)).exists():
                 messages.warning(request, 'You have already accepted this friend request')
             else:
-                # Создаем новую дружбу
                 friendship = Friendship(user1=friend_request.sender, user2=friend_request.receiver)
                 friendship.save()
                 friend_request.accepted = True
