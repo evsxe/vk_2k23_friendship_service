@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: Friendship Service API
+  version: 1.0.0
+  description: REST API for managing user friendships
+  contact:
+    name: Your Name
+    email: your.email@example.com
+paths:
+  /register/:
+    post:
+      summary: Register a new user
+      description: Creates a new user account
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: User name
+                email:
+                  type: string
+                  format: email
+                  description: User email
+                password:
+                  type: string
+                  format: password
+                  description: User password
+              required:
+                - username
+                - email
+                - password
+      responses:
+        '302':
+          description: Redirect
+  /users/:
+    get:
+      summary: Get a list of users
+      description: Returns a list of all users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: User ID
+                    username:
+                      type: string
+                      description: User name
+                    email:
+                      type: string
+                      description: User email
+    post:
+      summary: Create a new user
+      description: Creates a new user and returns the user information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: User name
+                email:
+                  type: string
+                  format: email
+                  description: User email
+                password:
+                  type: string
+                  format: password
+                  description: User password
+              required:
+                - username
+                - email
+                - password
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: User ID
+                  username:
+                    type: string
+                    description: User name
+                  email:
+                    type: string
+                    description: User email
+  /users/{id}/:
+    put:
+      summary: Update user information
+      description: Updates the user information and returns the updated user information
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: User name
+                email:
+                  type: string
+                  format: email
+                  description: User email
+              required:
+                - username
+                - email
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: User ID
+                  username:
+                    type: string
+                    description: User name
+                  email:
+                    type: string
+                    description: User email
+    get:
+      summary: Get user information
+      description: Returns the user information for the specified user ID
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: User ID
+                  username:
+                    type: string
+                    description: User name
+                  email:
+                    type: string
+                    description: User email
+  /users/{id}/detail/:
+    get:
+      summary: Get user details
+      description: Returns the user details for the specified user ID
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /users/{receiver_id}/send_friend_request/:
+    post:
+      summary: Send a friend request
+      description: Sends a friend request to the specified user ID
+      parameters:
+        - name: receiver_id
+          in: path
+          description: User ID of the recipient of the friend request
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: Redirect
+  /friend_requests/:
+    get:
+      summary: Get friend requests
+      description: Returns a list of all friend requests
+      responses:
+        '200':
+          description: OK
+  /friend_requests/{friend_request_id}/response/:
+    post:
+      summary: Respond to a friend request
+      description: Responds to the specified friend request
+      parameters:
+        - name: friend_request_id
+          in: path
+          description: Friend request ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                accepted:
+                  type: string
+                  enum: ['true', 'false']
+                  description: Indicates whether the friend request is accepted or rejected
+              required:
+                - accepted
+      responses:
+        '302':
+          description: Redirect
+  /friend_list/:
+    get:
+      summary: Get friend list
+      description: Returns a list of all friends
+      responses:
+        '200':
+          description: OK
